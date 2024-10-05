@@ -43,3 +43,20 @@ class Product:
         total_price = quantity * self.price
         self.quantity -= quantity
         return total_price
+
+
+class NonStockedProduct(Product):
+    def __init__(self, name, price):
+        super().__init__(name, price, quantity=0)
+
+    def show(self) -> str:
+        print(f"{self.name}, Price: {self.price}")
+
+
+class LimitedProduct(Product):
+    def __init__(self, name, price, quantity, maximum):
+        super().__init__(name,price, quantity)
+        self.maximum = maximum
+
+    def show(self) -> str:
+        print(f"{self.name}, Price: {self.price}, Max per order: {self.maximum}")
