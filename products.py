@@ -1,9 +1,9 @@
 class Product:
     def __init__(self, name: str, price: float, quantity: int):
         if not name:
-            raise ValueError("name cannot be empty.")
+            raise ValueError("Product name cannot be empty.")
         if price < 0:
-            raise ValueError("price must be a float.")
+            raise ValueError("Price cannot be negative.")
         if quantity < 0:
             raise ValueError("quantity shouldn't be negative.")
 
