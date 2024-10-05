@@ -48,17 +48,27 @@ def start(store):
                     break
 
                 quantity = input("What amount do you want? ")
+
                 if quantity == '':
                     break
 
                 try:
                     product_index = int(product_index) - 1  # Adjusting index for 0 based list
                     quantity = int(quantity)
+                    if quantity > store.get_total_quantity():
+                        print("Unfortunately, we don't have the requested amount")
 
-                    if 0 <= product_index < len(store.get_all_products()):
+                    elif 0 <= product_index < len(store.get_all_products()):
                         product = store.get_all_products()[product_index]
                         order_list.append((product, quantity))
-                        print("Product added to list!")
+
+                        # This update the quantity we have each time the user enter a number
+                        quantity -= quantity
+                        if quantity <= 0:
+                            print("We run out of this item, try again later")
+                        else:
+                            print("Product added to list!")
+
                     else:
                         print("Invalid product number. Please try again.")
                 except ValueError:
