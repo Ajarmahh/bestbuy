@@ -4,14 +4,24 @@ import store
 
 def setup_inventory():
     # setup initial stock of inventory
+    # setup initial stock of inventory
     product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
                     products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
                     products.Product("Google Pixel 7", price=500, quantity=250),
                     products.NonStockedProduct("Windows License", price=125),
                     products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
                     ]
-    best_buy = store.Store(product_list)
-    return best_buy
+
+    # Create promotion catalog
+    second_half_price = products.SecondHalfPrice("Second Half price!")
+    third_one_free = products.ThirdOneFree("Third One Free!")
+    thirty_percent = products.PercentDiscount("30% off!", percent=30)
+
+    # Add promotions to products
+    product_list[0].set_promotion(second_half_price)
+    product_list[1].set_promotion(third_one_free)
+    product_list[3].set_promotion(thirty_percent)
+    return store.Store(product_list)
 
 
 def start(store):
@@ -42,7 +52,13 @@ def start(store):
             order_list = []
             print("------")
             for index, product in enumerate(store.get_all_products(), start=1):
-                print(f"{index}. {product.name}, Price: ${product.price}, Quantity: {product.get_quantity()}")
+                product_info = f"{index}. {product.name}, Price: ${product.price}, Quantity: {product.get_quantity()}"
+
+                # Check if there is a promotion and include it in the display
+                if product.promotion is not None:
+                    product_info += f", Promotion: {product.promotion.name}"
+
+                print(product_info)  # Print the product information
             print("------\nWhen you want to finish order, enter empty text.")
 
             while True:
@@ -89,8 +105,8 @@ def start(store):
 
 
 def main():
-    start_menu = setup_inventory()
-    start(start_menu)
+    store_instance = setup_inventory()
+    start(store_instance)
 
 
 if __name__ == "__main__":
